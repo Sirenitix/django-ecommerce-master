@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <main>
+    <div class="container">
+
+      <!--Navbar-->
+      <nav class="navbar navbar-expand-lg navbar-dark aqua-gradient lighten-3 mt-3 mb-5">
+
+        <!-- Navbar brand -->
+        <span class="navbar-brand">Categories:</span>
+
+        <!-- Collapse button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+          aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="basicExampleNav">
+
+          <!-- Links -->
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'core:home' %}">All
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'core:automotive' %}">Automotive
+                  {% if 'automotive' in request.path %}
+                       <span class="sr-only">(current)</span>
+                  {% endif %}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'core:electrical' %}">Electrical
+                  {% if 'electrical' in request.path %}
+                       <span class="sr-only">(current)</span>
+                  {% endif %}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'core:handtools' %}">Hand Tools
+                  {% if 'handtools' in request.path %}
+                       <span class="sr-only">(current)</span>
+                  {% endif %}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'core:homehardware' %}">Home Hardware
+                  {% if 'homehardware' in request.path %}
+                       <span class="sr-only">(current)</span>
+                  {% endif %}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'core:lighting' %}">Lighting
+                  {% if 'lighting' in request.path %}
+                       <span class="sr-only">(current)</span>
+                  {% endif %}
+              </a>
+            </li>
+          </ul>
+
+          <!-- Links -->
+            {% if 'automotive' in request.path %}
+            <form action="{% url 'core:automotive-category-search' %}" method="POST" class="form-inline">
+              {% csrf_token %}
+            <div class="md-form my-0">
+              <input class="form-control mr-sm-2" name="title" type="text" placeholder="Search" aria-label="Search">
+            </div>
+          </form>
+        {% endif %}
+            {% if 'electrical' in request.path %}
+            <form action="{% url 'core:electrical-category-search' %}" method="POST" class="form-inline">
+              {% csrf_token %}
+            <div class="md-form my-0">
+              <input class="form-control mr-sm-2" name="title" type="text" placeholder="Search" aria-label="Search">
+            </div>
+          </form>
+        {% endif %}
+            {% if 'hand_tools' in request.path %}
+            <form action="{% url 'core:handtools-category-search' %}" method="POST" class="form-inline">
+              {% csrf_token %}
+            <div class="md-form my-0">
+              <input class="form-control mr-sm-2" name="title" type="text" placeholder="Search" aria-label="Search">
+            </div>
+          </form>
+        {% endif %}
+                {% if 'home_hardware' in request.path %}
+            <form action="{% url 'core:homehardware-category-search' %}" method="POST" class="form-inline">
+              {% csrf_token %}
+            <div class="md-form my-0">
+              <input class="form-control mr-sm-2" name="title" type="text" placeholder="Search" aria-label="Search">
+            </div>
+          </form>
+        {% endif %}
+                    {% if 'lighting' in request.path %}
+            <form action="{% url 'core:lighting-category-search' %}" method="POST" class="form-inline">
+              {% csrf_token %}
+            <div class="md-form my-0">
+              <input class="form-control mr-sm-2" name="title" type="text" placeholder="Search" aria-label="Search">
+            </div>
+          </form>
+        {% endif %}
+
+
+        </div>
+        <!-- Collapsible content -->
+
+      </nav>
+      <!--/.Navbar-->
+
+      <!--Section: Products v.3-->
+      <section class="text-center mb-4">
+
+        <div class="row wow fadeIn">
+
+      {% for item in object_list %}
+{#                   {% if 'automotive' in request.path and item.category == 'A' or 'electrical' in request.path and item.category == 'E' or  'handtools' in request.path and item.category == 'HT' or 'homehardware' in request.path and item.category == 'HH' or 'lighting' in request.path and item.category == 'L' %}#}
+
+
+          <div class="col-lg-3 col-md-6 mb-4">
+
+            <div class="card">
+
+              <div class="view overlay">
+                {% comment %} <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" {% endcomment %}
+                <img src="{{ item.image.url }}" class="card-img-top">
+                <a href="{{ item.get_absolute_url }}">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+
+              <div class="card-body text-center">
+                <a href="" class="grey-text">
+                  <h5>{{ item.get_category_display }}</h5>
+                </a>
+              {% if item.discount_price != 0 %}
+                <h5>
+                  <strong>
+                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title }}
+                      <span class="badge badge-pill {{ item.get_label_display }}-color">Discount</span>
+                    </a>
+                  </strong>
+                </h5>
+              {% endif %}
+
+                <h4 class="font-weight-bold blue-text">
+                  <strong>$
+                  {% if item.discount_price %}
+                  {{ item.discount_price }}
+                  {% else %}
+                  {{ item.price }}
+                  {% endif %}
+                  </strong>
+                </h4>
+
+              </div>
+
+            </div>
+
+          </div>
+{#                           {% endif %}#}
+          {% endfor %}
+        </div>
+
+      </section>
+      <!--Section: Products v.3-->
+
+      <!--Pagination-->
+        <ul class="pagination justify-content-center">
+            <span class="step-links">
+            {% if object_list.has_previous %}
+                <a href="?page=1" class="page-link" style="display: inline; text-align: center">&laquo; first</a>
+                <a href="?page={{ object_list.previous_page_number }}" class="page-link" style="display: inline; text-align: center">previous</a>
+            {% endif %}
+
+            <span class="current page-link" style="text-align: center">
+                Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+            </span>
+
+            {% if object_list.has_next %}
+                <a href="?page={{ object_list.next_page_number }}" class="page-link" style="display: inline; text-align: center">next</a>
+                <a href="?page={{ object_list.paginator.num_pages }}" class="page-link" style="display: inline; text-align: center">last &raquo;</a>
+            {% endif %}
+            </span>
+        </ul>
+      
+
+    </div>
+  </main>
+
+{% endblock content %}
+
+
+
