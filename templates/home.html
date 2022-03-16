@@ -24,7 +24,6 @@
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
               <a class="nav-link" href="#">All
-                <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
@@ -48,7 +47,7 @@
 
           <form action="{% url 'core:search-products' %}" method="POST" class="form-inline">
               {% csrf_token %}
-            <div class="md-form my-0">
+            <div>
               <input class="form-control mr-sm-2" name="title" type="text" placeholder="Search" aria-label="Search">
             </div>
           </form>

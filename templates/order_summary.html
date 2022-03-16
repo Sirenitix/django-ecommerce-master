@@ -62,17 +62,101 @@
         </tr>
         <tr>
             <td colspan="5">
-            <a class='btn btn-warning float-right ml-2' href='/checkout/'>Proceed to checkout</a>
-            <a class='btn btn-primary float-right' href='/'>Continue shopping</a>
+            <div style="text-align: center;"><a class='btn btn-primary' style="width: 67%; font-size: 15px; color: white; font-weight: bold;" href="/" >Continue shopping</a></div>
             </td>
         </tr>
         {% endif %}
+
         </tbody>
     </table>
 
     </div>
+     <div  id="paypal-button-container" align="center"></div>
+     <script src="https://www.paypal.com/sdk/js?client-id=AcuTYjkk7Ih_mkzjFfFK5PLRIzGHNuMml98tIgYwLMl0Oo2RqbXEA7uTXKQbjzbFqn-i-iQbvHO9d25m&currency=USD"></script>
+        <script>
+             var a = "{{object.get_total}}";
+             var transaction;
+             var user = "{{object.user}}";
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+             style: {
+                color:  'blue',
+                shape:  'pill',
+                label:  'pay'
+            },
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: a
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(orderData) {
+                    // Successful capture! For demo purposes:
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    transaction = orderData.purchase_units[0].payments.captures[0];
+                    alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+
+                    // Replace the above to show a success message within this page, e.g.
+                    // const element = document.getElementById('paypal-button-container');
+                    // element.innerHTML = '';
+                    // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                    // Or go to another URL:  actions.redirect('thank_you.html');
+                     function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie !== '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;}
+                    $( document ).ready(function() {
+                     function onchange (evt) {
+                       $.ajax({
+                         url: '/payment/',
+                         data: {
+                             'transaction_id' : transaction.id,
+                             'amount' : a,
+                             'user': user},
+                         type: 'POST',
+                            headers: {
+                     "X-CSRFToken": getCookie("csrftoken")
+                        }
+                       }).done(function(response){
+                         console.log(response);
+                           });
+                         }
+
+                     window.onblur = onchange;
+
+                   });
+
+                });
+            }
+
+
+
+
+        }).render('#paypal-button-container');
+
+        </script>
 
     </div>
+
   </main>
 
 {% endblock content %}

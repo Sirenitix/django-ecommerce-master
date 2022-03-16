@@ -13,7 +13,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -21,7 +20,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'verify_email.apps.VerifyEmailConfig',
     'django_countries',
-
     'core'
 ]
 

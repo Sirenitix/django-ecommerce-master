@@ -1,3 +1,4 @@
+import datetime
 import random
 import string
 
@@ -8,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
@@ -30,6 +32,17 @@ def handler403(request, exception):
 def create_ref_code():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
+
+def payment(request):
+    if request.method == 'POST':
+        print(request.POST['user'] + " " + request.POST['transaction_id'] + " " + request.POST['amount'])
+        payment = Payment()
+        payment.stripe_charge_id = request.POST['transaction_id']
+        payment.user = request.user
+        payment.amount = float(request.POST['amount'])
+        payment.save()
+        message = 'successful'
+    return HttpResponse(message)
 
 def products(request):
     context = {
@@ -376,16 +389,16 @@ class PaymentView(View):
 
 class HomeView(ListView):
     model = Item
-    paginate_by = 4
+    paginate_by = 10
     template_name = "home.html"
 
 
 def category_view(request):
     parameter = " ".join( w.capitalize() for w in request.path.replace("/caregory/", "").replace("_", " ").split())
     CATEGORIES_D = {v: k for k, v in CATEGORY_CHOICES}
-    results = Item.objects.filter(category__contains=CATEGORIES_D.get(parameter)).order_by('-price')
+    results = Item.objects.filter(category__contains=CATEGORIES_D.get(parameter)).order_by('price')
     page = request.GET.get('page')
-    paginator = Paginator(results, 1)
+    paginator = Paginator(results, 10)
     try:
         results = paginator.page(page)
     except PageNotAnInteger:

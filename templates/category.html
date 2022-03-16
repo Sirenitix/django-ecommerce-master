@@ -22,52 +22,72 @@
 
           <!-- Links -->
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item">
               <a class="nav-link" href="{% url 'core:home' %}">All
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'core:automotive' %}">Automotive
-                  {% if 'automotive' in request.path %}
-                       <span class="sr-only">(current)</span>
-                  {% endif %}
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'core:electrical' %}">Electrical
-                  {% if 'electrical' in request.path %}
-                       <span class="sr-only">(current)</span>
-                  {% endif %}
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'core:handtools' %}">Hand Tools
-                  {% if 'handtools' in request.path %}
-                       <span class="sr-only">(current)</span>
-                  {% endif %}
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'core:homehardware' %}">Home Hardware
-                  {% if 'homehardware' in request.path %}
-                       <span class="sr-only">(current)</span>
-                  {% endif %}
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'core:lighting' %}">Lighting
-                  {% if 'lighting' in request.path %}
-                       <span class="sr-only">(current)</span>
-                  {% endif %}
-              </a>
-            </li>
+              {% if 'automotive' in request.path %}
+                  <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'core:automotive' %}">Automotive
+                      </a>
+                  </li>
+                  {% else %}
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'core:automotive' %}">Automotive
+                      </a>
+                  </li>
+              {% endif %}
+            {% if 'electrical' in request.path %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'core:electrical' %}">Electrical
+                  </a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                      <a class="nav-link" href="{% url 'core:electrical' %}">Electrical
+                      </a>
+                </li>
+            {% endif %}
+              {% if 'hand_tools' in request.path %}
+                  <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'core:handtools' %}">Hand Tools
+                      </a>
+                  </li>
+              {% else %}
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'core:handtools' %}">Hand Tools
+                      </a>
+                  </li>
+              {% endif %}
+              {% if 'home_hardware' in request.path %}
+                  <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'core:homehardware' %}">Home Hardware
+                      </a>
+                    </li>
+              {% else %}
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'core:homehardware' %}">Home Hardware
+                      </a>
+                  </li>
+              {% endif %}
+                {% if 'lighting' in request.path %}
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'core:lighting' %}">Lighting
+                      </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'core:lighting' %}">Lighting
+                      </a>
+                    </li>
+              {% endif %}
           </ul>
 
           <!-- Links -->
             {% if 'automotive' in request.path %}
             <form action="{% url 'core:automotive-category-search' %}" method="POST" class="form-inline">
               {% csrf_token %}
-            <div class="md-form my-0">
+            <div>
               <input class="form-control mr-sm-2" name="title" type="text" placeholder="Search" aria-label="Search">
             </div>
           </form>
@@ -75,7 +95,7 @@
             {% if 'electrical' in request.path %}
             <form action="{% url 'core:electrical-category-search' %}" method="POST" class="form-inline">
               {% csrf_token %}
-            <div class="md-form my-0">
+            <div>
               <input class="form-control mr-sm-2" name="title" type="text" placeholder="Search" aria-label="Search">
             </div>
           </form>
@@ -83,7 +103,7 @@
             {% if 'hand_tools' in request.path %}
             <form action="{% url 'core:handtools-category-search' %}" method="POST" class="form-inline">
               {% csrf_token %}
-            <div class="md-form my-0">
+            <div>
               <input class="form-control mr-sm-2" name="title" type="text" placeholder="Search" aria-label="Search">
             </div>
           </form>
@@ -91,7 +111,7 @@
                 {% if 'home_hardware' in request.path %}
             <form action="{% url 'core:homehardware-category-search' %}" method="POST" class="form-inline">
               {% csrf_token %}
-            <div class="md-form my-0">
+            <div>
               <input class="form-control mr-sm-2" name="title" type="text" placeholder="Search" aria-label="Search">
             </div>
           </form>
@@ -99,7 +119,7 @@
                     {% if 'lighting' in request.path %}
             <form action="{% url 'core:lighting-category-search' %}" method="POST" class="form-inline">
               {% csrf_token %}
-            <div class="md-form my-0">
+            <div>
               <input class="form-control mr-sm-2" name="title" type="text" placeholder="Search" aria-label="Search">
             </div>
           </form>
@@ -170,6 +190,7 @@
       <!--Section: Products v.3-->
 
       <!--Pagination-->
+{% if is_paginated %}
         <ul class="pagination justify-content-center">
             <span class="step-links">
             {% if object_list.has_previous %}
@@ -187,7 +208,7 @@
             {% endif %}
             </span>
         </ul>
-      
+    {% endif %}
 
     </div>
   </main>
