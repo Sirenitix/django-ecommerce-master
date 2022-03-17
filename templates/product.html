@@ -63,6 +63,9 @@
               Add to cart
               <i class="fas fa-shopping-cart ml-1"></i>
             </a>
+
+              <a id="content"></a>
+
             <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">
               Remove from cart
             </a>
@@ -99,6 +102,18 @@
       <!--Grid row-->
 
     </div>
-  </main>
+<script>
 
+    var el = document.getElementById('content');
+    var content;
+
+    if  (document.getElementById('title').offsetWidth < 992) {
+        content = '<br><br>';
+         el.insertAdjacentHTML('afterbegin', content);
+    }
+
+
+</script>
+
+  </main>
 {% endblock content %}
