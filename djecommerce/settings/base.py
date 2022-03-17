@@ -81,8 +81,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'sirenitix@gmail.com'
-EMAIL_HOST_PASSWORD = 'Popidenil#1'
+EMAIL_HOST_USER = 'suleevn@gmail.com'
+EMAIL_HOST_PASSWORD = 'vzgbeplsaubdfoxi'
+DEFAULT_FROM_EMAIL = 'From Hardware Store'
+EMAIL_USE_SSL = False
+
 # CRISPY FORMS
 
+DEFAULT_FROM_DOMAIN = 'hardwarestore@mail.com'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
